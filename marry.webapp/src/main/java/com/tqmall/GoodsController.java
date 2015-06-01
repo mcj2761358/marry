@@ -1,7 +1,9 @@
 package com.tqmall;
 
+import com.tqmall.common.GoodsSearchParam;
 import com.tqmall.common.Result;
 import com.tqmall.index.GoodsFullIndex;
+import com.tqmall.service.GoodsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,8 +19,19 @@ public class GoodsController {
     @ResponseBody
     public Result index(){
 
-        GoodsFullIndex goodsFullIndex = new GoodsFullIndex();
-        boolean result = goodsFullIndex.makeFullIndex();
+        GoodsService goodsService = new GoodsService();
+        boolean result = goodsService.index();
         return Result.wrapSuccessfulResult(result);
     }
+
+
+    @RequestMapping("search")
+    @ResponseBody
+    public Result search(GoodsSearchParam searchParam) {
+
+
+
+        return null;
+    }
+
 }
