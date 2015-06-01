@@ -26,7 +26,7 @@ public class GoodsDao {
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 Goods goods = new Goods();
-                goods.setId(rs.getLong("id"));
+                goods.setId(rs.getInt("id"));
                 goods.setSn(rs.getString("sn"));
                 goods.setName(rs.getString("name"));
                 goods.setPrice(rs.getDouble("price"));

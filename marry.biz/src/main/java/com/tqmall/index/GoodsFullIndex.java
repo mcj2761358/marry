@@ -1,8 +1,11 @@
 package com.tqmall.index;
 
+import com.tqmall.common.BizContacts;
+import com.tqmall.common.search.GoodsFieldsContacts;
 import com.tqmall.dao.GoodsDao;
 import com.tqmall.model.Goods;
 import com.tqmall.utils.ESUtils;
+import com.tqmall.utils.PPLUtils;
 import com.tqmall.utils.StringUtils;
 
 import java.lang.reflect.Field;
@@ -79,11 +82,13 @@ public class GoodsFullIndex {
 
         //使用反射获取对象的所有字段
         Field[] fieldArr = goods.getClass().getDeclaredFields();
+        List<String> fieldNameList = new ArrayList<String>();
         for (Field field: fieldArr) {
             //如果不是static字段，将字段内容当如到文档中
             if (!Modifier.isStatic(field.getModifiers())) {
                 String fieldName = field.getName();
                 String fieldGetMethodName = StringUtils.makeGetMethod(fieldName);
+                fieldNameList.add(fieldName);
                 try {
                     Method method = goods.getClass().getMethod(fieldGetMethodName);
                     document.put(fieldName,method.invoke(goods));
@@ -92,6 +97,26 @@ public class GoodsFullIndex {
                 }
             }
         }
+
+        //将需要分词的字段进行分词处理后加入到文档
+        String[] vagueFields = GoodsFieldsContacts.VAGUE_FIELD_NAMES;
+        try {
+            for (String vagueField : vagueFields) {
+                if (fieldNameList.contains(vagueField)) {
+                    String methodName = StringUtils.makeGetMethod(vagueField);
+                    Method method = goods.getClass().getMethod(methodName);
+                    Object object = method.invoke(goods);
+                    if (object != null) {
+                        //分词后存到文档,以空格分隔单词
+                        String value = StringUtils.makeListToStr(PPLUtils.simplePPL(object.toString()), " ");
+                        document.put(vagueField + BizContacts.SUFFIX_PPL, value);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return document;
     }
 }
