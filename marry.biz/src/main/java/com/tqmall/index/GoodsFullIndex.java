@@ -30,7 +30,7 @@ public class GoodsFullIndex {
     /**
      * 建全量索引
      */
-    public void makeFullIndex() {
+    public boolean makeFullIndex() {
 
         //先删除已经存在的类型
         ESUtils.deleteType(indexName,typeName);
@@ -39,16 +39,18 @@ public class GoodsFullIndex {
         List<Goods> goodsList = goodsDao.getAllData();
 
         //对所有数据建所有
-        executeFullIndex(goodsList);
+        boolean result = executeFullIndex(goodsList);
+        return result;
     }
 
     /**
      * 构建索引
      * @param goodsList
      */
-    public void executeFullIndex(List<Goods> goodsList) {
+    public boolean executeFullIndex(List<Goods> goodsList) {
         List<Map<String,Object>> documentList = makeDocs(goodsList);
-        ESUtils.processCreateIndex(indexName,typeName,primaryKey,documentList);
+        boolean result = ESUtils.processCreateIndex(indexName,typeName,primaryKey,documentList);
+        return result;
     }
 
     /**

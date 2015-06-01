@@ -5,7 +5,7 @@ import com.tqmall.index.GoodsFullIndex;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
- 
+
 /**
  * Created by Minutch on 2015-05-31.
  */
@@ -18,7 +18,7 @@ public class GoodsController {
     public Result index(){
 
         GoodsFullIndex goodsFullIndex = new GoodsFullIndex();
-        goodsFullIndex.makeFullIndex();
-        return Result.wrapSuccessfulResult("create index success");
+        boolean result = goodsFullIndex.makeFullIndex();
+        return Result.wrapSuccessfulResult(result);
     }
 }
