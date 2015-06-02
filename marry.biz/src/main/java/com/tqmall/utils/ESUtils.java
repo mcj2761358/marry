@@ -171,6 +171,36 @@ public class ESUtils {
 
         return false;
     }
+
+    /**
+     * 快速批量刷新索引，不刷新
+     * @param indexName
+     * @param typeName
+     * @param idList
+     * @return
+     */
+    public static boolean bulkDeleteIndex(String indexName,String typeName,List<Integer> idList) {
+
+        if (idList == null || idList.size()==0) {
+            return true;
+        }
+
+        try {
+            BulkRequestBuilder bulkRequestBuilder = getClient().prepareBulk();
+            for (Integer id : idList) {
+                bulkRequestBuilder.add(getClient().prepareDelete(indexName,typeName,String.valueOf(id)));
+            }
+            BulkResponse bulkResponse = bulkRequestBuilder.execute().actionGet();
+            if (bulkResponse.hasFailures()) {
+                System.out.println(bulkResponse.buildFailureMessage());
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
 
 

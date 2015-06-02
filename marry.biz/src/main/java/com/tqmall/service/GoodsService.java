@@ -5,6 +5,7 @@ import com.tqmall.common.search.GoodsFieldsContacts;
 import com.tqmall.common.search.GoodsSearchParam;
 import com.tqmall.common.search.Sort;
 import com.tqmall.index.GoodsFullIndex;
+import com.tqmall.index.GoodsRealTimeIndex;
 import com.tqmall.model.Goods;
 import com.tqmall.utils.ESUtils;
 import com.tqmall.utils.PPLUtils;
@@ -21,6 +22,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +35,18 @@ public class GoodsService {
      * 全量创建索引
      * @return
      */
-    public boolean index() {
+    public boolean fullIndex() {
         GoodsFullIndex goodsFullIndex = new GoodsFullIndex();
         boolean result = goodsFullIndex.makeFullIndex();
         return result;
+    }
+
+    /**
+     * 启动实时索引
+     */
+    public void startRealIndex(){
+        GoodsRealTimeIndex goodsRealTimeIndex = new GoodsRealTimeIndex();
+        goodsRealTimeIndex.start(new Date().getTime());
     }
 
     /**

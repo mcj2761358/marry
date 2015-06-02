@@ -23,9 +23,17 @@ public class GoodsController {
     @ResponseBody
     public Result index(){
 
-        boolean result = goodsService.index();
+        boolean result = goodsService.fullIndex();
         return Result.wrapSuccessfulResult(result);
     }
+
+    @RequestMapping("realIndex")
+    @ResponseBody
+    public Result realIndex() {
+        goodsService.startRealIndex();
+        return Result.wrapSuccessfulResult("start success!");
+    }
+
 
     @RequestMapping("search")
     @ResponseBody

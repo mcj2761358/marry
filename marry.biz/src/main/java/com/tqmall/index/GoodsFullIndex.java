@@ -11,10 +11,7 @@ import com.tqmall.utils.StringUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Minutch on 2015-05-31.
@@ -42,7 +39,7 @@ public class GoodsFullIndex {
         List<Goods> goodsList = goodsDao.getAllData();
 
         //对所有数据建所有
-        boolean result = executeFullIndex(goodsList);
+        boolean result = bulkCreateIndex(goodsList);
         return result;
     }
 
@@ -50,7 +47,7 @@ public class GoodsFullIndex {
      * 构建索引
      * @param goodsList
      */
-    public boolean executeFullIndex(List<Goods> goodsList) {
+    public boolean bulkCreateIndex(List<Goods> goodsList) {
         List<Map<String,Object>> documentList = makeDocs(goodsList);
         boolean result = ESUtils.processCreateIndex(indexName,typeName,primaryKey,documentList);
         return result;
@@ -119,6 +116,18 @@ public class GoodsFullIndex {
 
         return document;
     }
+
+    /**
+     * 删除索引
+     * @param primaryKeys
+     */
+    public void bulkDeleteIndex(List<Integer> primaryKeys) {
+        if (primaryKeys.isEmpty()) {
+            return;
+        }
+        ESUtils.bulkDeleteIndex(indexName,typeName,primaryKeys);
+    }
+
 }
 
 
