@@ -46,7 +46,7 @@ public class JDBCUtils {
     public static void closeRs(ResultSet rs) {
         try {
             if (rs != null) {
-                rs.close();;
+                rs.close();
             }
         } catch (Exception e) {
             e.printStackTrace();

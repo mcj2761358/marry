@@ -27,7 +27,6 @@ public class GoodsController {
         return Result.wrapSuccessfulResult(result);
     }
 
-
     @RequestMapping("search")
     @ResponseBody
     public Result search(GoodsSearchParam searchParam) {

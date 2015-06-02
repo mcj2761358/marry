@@ -76,7 +76,7 @@ public class PPLUtils {
                 continue;
 
             }
-            //如果字节数为1，是数字或者英文字母
+            //如果字节数为1
             if (length == 1) {
                 sb.append(charStr);
             }

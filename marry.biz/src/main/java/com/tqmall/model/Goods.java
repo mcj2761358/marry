@@ -21,8 +21,8 @@ public class Goods  implements PrimaryKeyInterface{
     private String des;
 
     @Override
-    public Long getPrimaryKey() {
-        return null;
+    public Integer getPrimaryKey() {
+        return id;
     }
 
     public String[] getFieldNames(){
